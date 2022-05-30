@@ -1,0 +1,4 @@
+{
+  "port": 4000,
+  "mongoUri": "mongodb+srv://mern:root@cluster0.tdfdj.mongodb.net/?retryWrites=true&w=majority"
+}
