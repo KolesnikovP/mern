@@ -2,6 +2,8 @@ const router = require('express').Router()
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const {check, validationResult} = require('express-validator')
+const jwt = require('jsonwebtoken')
+const config= require('config')
 // /api/auth/register
 router.post(
   '/register',
@@ -44,7 +46,7 @@ router.post(
 router.post(
   '/login',
   [
-    check('email', 'введите нормальный email').normalizeEmail().isEmail()
+    check('email', 'введите нормальный email').normalizeEmail().isEmail(),
     check('password', 'введите пароль').exists()
   ] ,
   async (req, res)=> {
@@ -72,7 +74,12 @@ router.post(
         return res.status(400).json({message: 'неверный пароль, попробуйте снова'})
       }
 
-
+      const token = jwt.sign(
+        {userId: user.id},
+        config.get('jwtSecret'),
+        {expiresIn: '1h'}
+      )
+      res.json({token, userId: user.id})
 
     } catch (e) {
       res.status(500).json({message: 'что-то пошло не так, попробуйте снова!'})
