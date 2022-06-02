@@ -6,6 +6,7 @@ const app = express()
 
 app.use(express.json({extended: true}))
 app.use('/api/auth', require('./routes/auth.routes')) // можно и так делать чтобы не плодить переменные
+app.use('api/link', require('./routes/link.routes'))
 
 const PORT = config.get('port') || 4000
 
