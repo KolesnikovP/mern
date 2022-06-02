@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 const CreatePage = () => {
   const navigate = useNavigate()
   const auth = useContext(AuthContext)
-  const  {request} = useHttp()
+  const {request} = useHttp()
   const [link, setLink] = useState('')
 
   useEffect(()=>{
