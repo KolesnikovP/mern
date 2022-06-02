@@ -1,16 +1,28 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {useHttp} from "../hooks/http.hook";
 
 export const AuthPage = () => {
+  const {loading, request, error} = useHttp()
   const [form, setForm] = useState({
     email: '', password: ''
   })
 
+  useEffect(()=> {
+
+  }, [error])
   const changeHandler = event => {
     // event.target.name - в инпуте добавлены нейминги (name)
     setForm({...form, [event.target.name]: event.target.value})
   }
 
+ const registerHandler = async () => {
+    try {
+      const data = await request('/api/auth/register', 'POST', {...form})
+      console.log('data data ', data)
+    } catch (e) {
 
+    }
+ }
 
   return(
     <div className='row'>
@@ -39,14 +51,28 @@ export const AuthPage = () => {
                   type="password"
                   className="validate yellow-input"
                   name='password'
+                  onChange={changeHandler}
                 />
                   <label htmlFor="email">Password</label>
               </div>
             </div>
           </div>
           <div className="card-action">
-              <button className='btn yellow darken-4' style={{marginRight: 10}}>Войти</button>
-              <button className='btn grey lighten-1 black-text'>Зарегистрироваться</button>
+              <button
+                className='btn yellow darken-4'
+                style={{marginRight: 10}}
+                disabled={loading}
+              >
+                Войти
+              </button>
+
+              <button
+                className='btn grey lighten-1 black-text'
+                onClick={registerHandler}
+                disabled={loading}
+              >
+                Зарегистрироваться
+              </button>
           </div>
         </div>
       </div>
